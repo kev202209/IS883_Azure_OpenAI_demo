@@ -17,7 +17,7 @@ openai.api_key = os.environ.get('OPENAI_API_KEY')
 st.title("Lyrics Generator")
 
 # Dropdown to select the artist
-selected_artist = st.selectbox('Select an artist:', artist_lyrics['track_artist'].unique())
+selected_artist = st.selectbox('Select an artist:', artist_lyrics['artist'].unique())
 
 # Function to generate lyrics based on selected artist
 def generate_lyrics(artist):
