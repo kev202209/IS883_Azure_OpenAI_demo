@@ -1,25 +1,29 @@
-# Import necessary libraries
 import streamlit as st
-import openai
 import pandas as pd
+import openai
 import os
 
 # Load your dataset
-queen_lyrics = pd.read_csv('path_to_queen_lyrics.csv')  # Load your dataset here
+file_path = "lyrics_dataset_all.csv"  # Update the path to your dataset
+df = pd.read_csv(file_path)
+
+# Filter the dataset to keep only the 'track_artist' and 'lyrics' columns
+artist_lyrics = df[['artist', 'lyrics']]
 
 # Set up your OpenAI API key
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
-# Initialize Streamlit
+# Streamlit app title
 st.title("Lyrics Generator")
 
-# Create a text input field for user queries
-user_input = st.text_input("Ask a question:")
+# Dropdown to select the artist
+selected_artist = st.selectbox('Select an artist:', artist_lyrics['track_artist'].unique())
 
-# Function to generate lyrics based on user input and dataset
-def generate_lyrics(user_input):
-    combined_lyrics = '\n'.join(queen_lyrics['lyrics'].dropna().tolist())
-    prompt = f"Generate lyrics inspired by: {user_input}\n\n{combined_lyrics}"
+# Function to generate lyrics based on selected artist
+def generate_lyrics(artist):
+    artist_lyrics = df[df['artist'] == artist]['lyrics'].dropna().tolist()
+    combined_lyrics = '\n'.join(artist_lyrics)
+    prompt = f"Generate lyrics in the style of {artist}\n\n{combined_lyrics}"
     response = openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
@@ -27,7 +31,7 @@ def generate_lyrics(user_input):
     )
     return response['choices'][0]['text'].strip()
 
-# Generate and display lyrics based on user input
-if user_input:
-    generated_lyrics = generate_lyrics(user_input)
+# Generate and display lyrics based on the selected artist
+if selected_artist:
+    generated_lyrics = generate_lyrics(selected_artist)
     st.write(generated_lyrics)
