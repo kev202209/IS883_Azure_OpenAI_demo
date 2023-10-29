@@ -64,4 +64,4 @@ jobs:
         with:
           app-name: 'IS833-azure-guide'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F442A04BADF940E08794A71749DC58EE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A79609262CE941B39BD13E1F7977C686 }}
