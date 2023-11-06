@@ -22,7 +22,8 @@ selected_artist = st.selectbox('Select an artist:', artist_lyrics['artist'].uniq
 # Function to generate lyrics based on selected artist
 def generate_lyrics(artist):
     artist_lyrics = df[df['artist'] == artist]['lyrics'].dropna().tolist()
-    combined_lyrics = '\n'.join(artist_lyrics)
+    combined_lyrics = '\n'.join(artist_lyrics[:5])
+    combined_lyrics = combined_lyrics[:2048]
     prompt = f"Generate lyrics in the style of {artist}\n\n{combined_lyrics}"
     response = openai.Completion.create(
         engine="text-davinci-003",
