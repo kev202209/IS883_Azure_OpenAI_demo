@@ -24,7 +24,7 @@ def generate_lyrics(artist):
     combined_lyrics = combined_lyrics[:2048]  # Limit the total characters to 2048 to fit token limits
     prompt = f"Generate lyrics in the style of {artist}\n\n{combined_lyrics}"
     response = openai.Completion.create(
-        engine="text-davinci-003",
+        engine="text-davinci-002",
         prompt=prompt,
         max_tokens=100
     )
