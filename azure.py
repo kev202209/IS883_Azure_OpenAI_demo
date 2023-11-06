@@ -25,13 +25,12 @@ def generate_lyrics(artist):
     artist_lyrics = df[df['artist'] == artist]['lyrics'].dropna().tolist()
     combined_lyrics = '\n'.join(artist_lyrics[:5])  # Reduce the total lines to fit within context limits
     combined_lyrics = combined_lyrics[:2048]  # Limit the total characters to 2048 to fit token limits
-    prompt = f"Generate lyrics in the style of {artist}\n\n{combined_lyrics}"
     response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
+        model="text-davinci-003",
+        prompt=combined_lyrics,
         max_tokens=100
     )
-    return response['choices'][0]['text'].strip()
+    return response.choices[0].text.strip()
 
 # Generate and display lyrics based on the selected artist when the button is clicked
 if selected_artist:
