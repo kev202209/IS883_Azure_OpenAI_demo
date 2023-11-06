@@ -19,11 +19,12 @@ st.title("Lyrics Generator")
 # Dropdown to select the artist
 selected_artist = st.selectbox('Select an artist:', artist_lyrics['artist'].unique())
 
+
 # Function to generate lyrics based on selected artist
 def generate_lyrics(artist):
     artist_lyrics = df[df['artist'] == artist]['lyrics'].dropna().tolist()
-    combined_lyrics = '\n'.join(artist_lyrics[:5])
-    combined_lyrics = combined_lyrics[:2048]
+    combined_lyrics = '\n'.join(artist_lyrics[:5])  # Reduce the total lines to fit within context limits
+    combined_lyrics = combined_lyrics[:2048]  # Limit the total characters to 2048 to fit token limits
     prompt = f"Generate lyrics in the style of {artist}\n\n{combined_lyrics}"
     response = openai.Completion.create(
         engine="text-davinci-003",
@@ -32,7 +33,8 @@ def generate_lyrics(artist):
     )
     return response['choices'][0]['text'].strip()
 
-# Generate and display lyrics based on the selected artist
+# Generate and display lyrics based on the selected artist when the button is clicked
 if selected_artist:
-    generated_lyrics = generate_lyrics(selected_artist)
-    st.write(generated_lyrics)
+    if st.button('Generate Lyrics'):
+        generated_lyrics = generate_lyrics(selected_artist)
+        st.write(generated_lyrics)
