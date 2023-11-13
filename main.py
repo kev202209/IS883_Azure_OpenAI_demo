@@ -3,35 +3,39 @@ import pandas as pd
 import openai
 import os
 
-# Load your dataset
-file_path = "lyrics_dataset_all.csv"  # Update the path to your dataset
-df = pd.read_csv(file_path)
 
-# Filter the dataset to keep only the 'artist' and 'lyrics' columns
-artist_lyrics = df[['artist', 'lyrics']]
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
-# Streamlit app title
-st.title("Lyrics Generator")
 
-# Dropdown to select the artist
-selected_artist = st.selectbox('Select an artist:', artist_lyrics['artist'].unique())
+def generate_lyrics(artist_name, genre, temperature=0.7):
+    prompt = f"Imagine you are a famous singer/songwriter with numerous hit songs. Generate song lyrics for another successful song that will have just as much popularity in the style of {artist_name} and in the {genre} genre."
 
-# Function to generate lyrics based on selected artist
-def generate_lyrics(artist):
-    artist_lyrics = df[df['artist'] == artist]['lyrics'].dropna().tolist()
-    combined_lyrics = '\n'.join(artist_lyrics[:5])  # Reduce the total lines to fit within context limits
-    combined_lyrics = combined_lyrics[:2048]  # Limit the total characters to 2048 to fit token limits
-    prompt = f"Generate lyrics in the style of {artist}\n\n{combined_lyrics}"
+    # Generate lyrics using OpenAI GPT-3
     response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="text-davinci-003",  # You can experiment with different engines
         prompt=prompt,
-        max_tokens=100
+        max_tokens=200,  # Adjust max_tokens as needed
+        temperature=temperature,
     )
-    return response['choices'][0]['text'].strip()
 
-# Generate and display lyrics based on the selected artist when the button is clicked
-if selected_artist:
-    if st.button('Generate Lyrics'):
-        generated_lyrics = generate_lyrics(selected_artist)
-        st.write(generated_lyrics)
+    generated_lyric = response['choices'][0]['text']
+    return generated_lyric
+
+# Streamlit app
+st.title("Lyric Generator Chatbot")
+
+# Get user inputs
+artist_name = st.text_input("Enter the artist's name:")
+genre = st.text_input("Enter the genre:")
+temperature = st.slider("Select temperature", 0.1, 1.0, 0.7, 0.1)
+
+# Generate lyrics when the user clicks the button
+if st.button("Generate Lyrics"):
+    if artist_name and genre:
+        # Call the generate_lyrics function
+        generated_lyric = generate_lyrics(artist_name, genre, temperature)
+
+        # Display the generated lyric
+        st.success(f"Generated Lyric:\n{generated_lyric}")
+    else:
+        st.warning("Please fill in the artist's name and genre.")
