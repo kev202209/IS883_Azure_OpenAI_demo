@@ -2,4 +2,4 @@ python-dotenv==1.0.0
 streamlit==1.18.1
 streamlit-extras
 altair==4.1.0
-openai
+openai==0.28
