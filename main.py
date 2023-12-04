@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import openai
 import os
-from nltk.translate.bleu_score import sentence_bleu
 
 # Set up the OpenAI API key
 openai.api_key = os.environ.get('OPENAI_API_KEY')
@@ -26,12 +25,6 @@ def generate_lyrics(artist_name, genre, subject=None, rhyme=None, temperature=0.
     generated_lyric = response['choices'][0]['text']
     return generated_lyric
 
-# Function to calculate BLEU score
-def calculate_bleu(reference, candidate):
-    reference_tokens = [word.lower() for word in reference.split()]
-    candidate_tokens = [word.lower() for word in candidate.split()]
-    return sentence_bleu([reference_tokens], candidate_tokens)
-
 # Streamlit app
 st.title("Lyric Generator Chatbot")
 
@@ -49,14 +42,7 @@ if st.button("Generate Lyrics"):
         # Call the generate_lyrics function
         generated_lyric = generate_lyrics(artist_name, genre, subject, rhyme, temperature, use_slang)
 
-        # Get the reference text (replace this with your actual reference text)
-        reference_text = "Hello, it's me \n I was wondering if after all these years you'd like to meet \n To go over everything \n They say that time's supposed to heal ya, but I ain't done much healing \n Hello, can you hear me? \n I'm in California dreaming about who we used to be \n When we were younger and free \n I've forgotten how it felt before the world fell at our feet \n There's such a difference between us \n And a million miles"
-
-        # Calculate BLEU score
-        bleu_score = calculate_bleu(reference_text, generated_lyric)
-
-        # Display the generated lyric and BLEU score
+        # Display the generated lyric
         st.success(f"Generated Lyric:\n{generated_lyric}")
-        st.info(f"BLEU Score: {bleu_score:.2f} (The higher, the better quality)")
     else:
         st.warning("Please fill in the artist's name and genre.")
