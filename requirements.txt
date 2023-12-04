@@ -4,3 +4,4 @@ streamlit-extras
 altair==4.1.0
 openai==0.28
 googletrans-py
+deep-translator
