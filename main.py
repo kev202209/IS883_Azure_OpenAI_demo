@@ -10,7 +10,7 @@ openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 # Function to generate lyrics
 def generate_lyrics(artist_name, genre, temperature=0.7, use_slang=False):
-    prompt = f"Imagine you are a famous singer/songwriter with numerous hit songs. Generate song lyrics for another successful song that will have just as much popularity in the style of {artist_name} and in the {genre} genre."
+    prompt = f"Write the lyrics to a song based on this {genre} that the author wants: {subject}, in similarity to this artist: {artist_name}, and if available create rhymes with this phrase {rhyme}"
 
     # Modify the prompt based on the use_slang parameter
     if use_slang:
@@ -39,6 +39,8 @@ st.title("Lyric Generator Chatbot")
 # Get user inputs
 artist_name = st.text_input("Enter the artist's name:")
 genre = st.text_input("Enter the genre:")
+subject = st.text_input("Subject:", "Enter the subject for this particular song")
+rhyme = st.text_input("Rhyme:", "Enter a particular word or phrase that you would like used")
 temperature = st.slider("Select temperature", 0.1, 1.0, 0.7, 0.1)
 use_slang = st.checkbox("Allow Slang in Lyrics", value=False, key='slang_checkbox', help='Use slang and casual language in the lyrics.', use_container_width=True)
 
@@ -53,7 +55,7 @@ st.write(f"translate_toggle value: {translate_toggle}")
 if st.button("Generate Lyrics"):
     if artist_name and genre:
         # Call the generate_lyrics function
-        generated_lyric = generate_lyrics(artist_name, genre, temperature, use_slang)
+        generated_lyric = generate_lyrics(artist_name, genre, subject, rhyme, temperature, use_slang)
 
         # Translate the generated lyric to German if the toggle is on
         translated_lyric = translate_to_german(generated_lyric) if translate_toggle else generated_lyric
