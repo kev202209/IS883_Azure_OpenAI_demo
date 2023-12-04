@@ -44,5 +44,11 @@ if st.button("Generate Lyrics"):
 
         # Display the generated lyric
         st.success(f"Generated Lyric:\n{generated_lyric}")
-    else:
-        st.warning("Please fill in the artist's name and genre.")
+
+        # Ask for user feedback
+        user_feedback = st.selectbox("How satisfied are you with the generated lyric?", ["Satisfied", "Neutral", "Dissatisfied"])
+
+        # Use user feedback to refine the model if dissatisfied
+        if user_feedback == "Dissatisfied":
+            st.info("Thank you for your feedback! We will use this to improve our lyric generation.")
+            # You can include logic here
