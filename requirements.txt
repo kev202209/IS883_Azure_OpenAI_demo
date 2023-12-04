@@ -4,4 +4,4 @@ streamlit-extras
 altair==4.1.0
 openai==0.28
 deep-translator==1.11.4
-nltk
+nltk==3.0.0
