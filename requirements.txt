@@ -3,4 +3,4 @@ streamlit==1.18.1
 streamlit-extras
 altair==4.1.0
 openai==0.28
-googletrans==4.0.0-rc1
+googletrans
