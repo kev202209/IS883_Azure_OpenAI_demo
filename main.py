@@ -34,7 +34,7 @@ st.title("Lyric Generator Chatbot")
 artist_name = st.text_input("Enter the artist's name:")
 genre = st.text_input("Enter the genre:")
 temperature = st.slider("Select temperature", 0.1, 1.0, 0.7, 0.1)
-use_slang = st.checkbox("Allow Slang in Lyrics", value=False, key='slang_checkbox', help='Use slang and casual language in the lyrics.', use_container_width=True)
+use_slang = st.checkbox("Allow Slang in Lyrics", value=False, key='slang_checkbox', help='Use slang and casual language in the lyrics.')
 
 # Generate lyrics when the user clicks the button
 if st.button("Generate Lyrics"):
