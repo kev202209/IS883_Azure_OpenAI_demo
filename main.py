@@ -40,7 +40,7 @@ use_slang = st.checkbox("Allow Slang in Lyrics", value=False, key='slang_checkbo
 if st.button("Generate Lyrics"):
     if artist_name and genre:
         # Call the generate_lyrics function
-        generated_lyric = generate_lyrics(artist_name, genre, subject, rhyme, temperature, use_slang)
+        generated_lyric = generate_lyrics(artist_name, genre, temperature, use_slang)
 
    
         # Display the generated or translated lyric
