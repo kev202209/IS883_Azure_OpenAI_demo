@@ -1,3 +1,4 @@
+pip install googletrans==4.0.0-rc1
 import streamlit as st
 import pandas as pd
 import openai
