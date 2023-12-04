@@ -10,7 +10,7 @@ openai.api_key = os.environ.get('OPENAI_API_KEY')
 def generate_lyrics(artist_name, genre, temperature=0.7, use_salng=False):
     prompt = f"Imagine you are a famous singer/songwriter with numerous hit songs. Generate song lyrics for another successful song that will have just as much popularity in the style of {artist_name} and in the {genre} genre."
 
-            # Modify the prompt based on the use_slang parameter
+    # Modify the prompt based on the use_slang parameter
     if use_slang:
         prompt += " Use slang and casual language in the lyrics."
         
@@ -32,7 +32,10 @@ st.title("Lyric Generator Chatbot")
 artist_name = st.text_input("Enter the artist's name:")
 genre = st.text_input("Enter the genre:")
 temperature = st.slider("Select temperature", 0.1, 1.0, 0.7, 0.1)
-use_slang = st.checkbox("Allow Slang in Lyrics")
+use_slang = st.checkbox("Allow Slang in Lyrics", value=False, key='slang_checkbox', help='Use slang and casual language in the lyrics.', use_container_width=True)
+
+# Logging statement to check the value of use_slang
+st.write(f"use_slang value: {use_slang}")
 
 # Generate lyrics when the user clicks the button
 if st.button("Generate Lyrics"):
