@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import openai
 import os
-pip install deep-translator
-from deep_translator import GoogleTranslator
+from googletrans import Translator
 
 # Set up the OpenAI API key
 openai.api_key = os.environ.get('OPENAI_API_KEY')
@@ -29,7 +28,7 @@ def generate_lyrics(artist_name, genre, temperature=0.7, use_slang=False):
 
 # Function to translate text from English to German
 def translate_to_german(text):
-    translator = GoogleTranslator()
+    translator = Translator()
     translation = translator.translate(text, dest='de')
     return translation.text
 
@@ -42,8 +41,12 @@ genre = st.text_input("Enter the genre:")
 temperature = st.slider("Select temperature", 0.1, 1.0, 0.7, 0.1)
 use_slang = st.checkbox("Allow Slang in Lyrics", value=False, key='slang_checkbox', help='Use slang and casual language in the lyrics.', use_container_width=True)
 
-# Logging statement to check the value of use_slang
+# Toggle button for translation
+translate_toggle = st.checkbox("Translate to German", value=False, key='translate_toggle', help='Toggle to translate the generated lyric to German.')
+
+# Logging statements to check the values of use_slang and translate_toggle
 st.write(f"use_slang value: {use_slang}")
+st.write(f"translate_toggle value: {translate_toggle}")
 
 # Generate lyrics when the user clicks the button
 if st.button("Generate Lyrics"):
@@ -51,10 +54,10 @@ if st.button("Generate Lyrics"):
         # Call the generate_lyrics function
         generated_lyric = generate_lyrics(artist_name, genre, temperature, use_slang)
 
-        # Translate the generated lyric to German
-        translated_lyric = translate_to_german(generated_lyric)
+        # Translate the generated lyric to German if the toggle is on
+        translated_lyric = translate_to_german(generated_lyric) if translate_toggle else generated_lyric
 
-        # Display the translated lyric
+        # Display the generated or translated lyric
         st.success(f"Generated Lyric (English):\n{generated_lyric}")
         st.success(f"Translated Lyric (German):\n{translated_lyric}")
     else:
