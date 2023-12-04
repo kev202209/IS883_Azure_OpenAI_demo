@@ -2,28 +2,35 @@ import streamlit as st
 import pandas as pd
 import openai
 import os
+from googletrans import Translator  # Make sure to install the 'googletrans==4.0.0-rc1' library
 
-
+# Set up the OpenAI API key
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
-
-def generate_lyrics(artist_name, genre, temperature=0.7, use_salng=False):
+# Function to generate lyrics
+def generate_lyrics(artist_name, genre, temperature=0.7, use_slang=False):
     prompt = f"Imagine you are a famous singer/songwriter with numerous hit songs. Generate song lyrics for another successful song that will have just as much popularity in the style of {artist_name} and in the {genre} genre."
 
     # Modify the prompt based on the use_slang parameter
     if use_slang:
         prompt += " Use slang and casual language in the lyrics."
-        
+
     # Generate lyrics using OpenAI GPT-3
     response = openai.Completion.create(
-        engine="text-davinci-003",  # You can experiment with different engines
+        engine="text-davinci-003",
         prompt=prompt,
-        max_tokens=200,  # Adjust max_tokens as needed
+        max_tokens=200,
         temperature=temperature,
     )
 
     generated_lyric = response['choices'][0]['text']
     return generated_lyric
+
+# Function to translate text from English to German
+def translate_to_german(text):
+    translator = Translator()
+    translation = translator.translate(text, dest='de')
+    return translation.text
 
 # Streamlit app
 st.title("Lyric Generator Chatbot")
@@ -43,7 +50,11 @@ if st.button("Generate Lyrics"):
         # Call the generate_lyrics function
         generated_lyric = generate_lyrics(artist_name, genre, temperature, use_slang)
 
-        # Display the generated lyric
-        st.success(f"Generated Lyric:\n{generated_lyric}")
+        # Translate the generated lyric to German
+        translated_lyric = translate_to_german(generated_lyric)
+
+        # Display the translated lyric
+        st.success(f"Generated Lyric (English):\n{generated_lyric}")
+        st.success(f"Translated Lyric (German):\n{translated_lyric}")
     else:
         st.warning("Please fill in the artist's name and genre.")
