@@ -10,7 +10,7 @@ openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 # Function to generate lyrics
 def generate_lyrics(artist_name, genre, temperature=0.7, use_slang=False):
-    prompt = f"Write the lyrics to a song based on this {genre} that the author wants: {subject}, in similarity to this artist: {artist_name}, and if available create rhymes with this phrase {rhyme}"
+    prompt = f"Imagine you are a songwriter. Write the lyrics to a song based on this {genre} in similarity to this artist: {artist_name}. Try your best to mimic the style of the artist"
 
     # Modify the prompt based on the use_slang parameter
     if use_slang:
