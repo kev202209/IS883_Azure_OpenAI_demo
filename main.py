@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import openai
 import os
-from googletrans import Translator  # Make sure to install the 'googletrans==4.0.0-rc1' library
+pip install deep-translator
+from deep_translator import GoogleTranslator
 
 # Set up the OpenAI API key
 openai.api_key = os.environ.get('OPENAI_API_KEY')
@@ -28,7 +29,7 @@ def generate_lyrics(artist_name, genre, temperature=0.7, use_slang=False):
 
 # Function to translate text from English to German
 def translate_to_german(text):
-    translator = Translator()
+    translator = GoogleTranslator()
     translation = translator.translate(text, dest='de')
     return translation.text
 
