@@ -1,14 +1,15 @@
+
 import streamlit as st
-import pandas as pd
 import openai
 import os
+from deep_translator import GoogleTranslator
 
 # Set up the OpenAI API key
 openai.api_key = os.environ.get('OPENAI_API_KEY')
 
 # Function to generate lyrics
 def generate_lyrics(artist_name, genre, subject=None, rhyme=None, temperature=0.7, use_slang=False):
-    prompt = f"Imagine you are a songwriter. Write the lyrics to a song based on this {genre} that the author wants: {subject}, in similarity to this artist: {artist_name}, and if available create rhymes with this phrase {rhyme}. Try your best to match the style of the artist. Unless specified, do not use slang or casual langauge in the lyrics generated."
+    prompt = f"Imagine you are a songwriter. Write the lyrics to a song based on this {genre} that the author wants: {subject}, in similarity to this artist: {artist_name}, and if available create rhymes with this phrase {rhyme}. Try your best to match the style of the artist. Unless specified, do not use slang or casual language in the lyrics generated."
 
     # Modify the prompt based on the use_slang parameter
     if use_slang:
@@ -24,6 +25,12 @@ def generate_lyrics(artist_name, genre, subject=None, rhyme=None, temperature=0.
 
     generated_lyric = response['choices'][0]['text']
     return generated_lyric
+
+# Function to translate text to German
+def translate_to_german(text):
+    translator = GoogleTranslator(source='auto', target='de')
+    translation = translator.translate(text)
+    return translation
 
 # Streamlit app
 st.title("Lyric Generator Chatbot")
@@ -45,10 +52,17 @@ if st.button("Generate Lyrics"):
         # Display the generated lyric
         st.success(f"Generated Lyric:\n{generated_lyric}")
 
+        # Ask if the user wants to translate to German
+        translate_german = st.checkbox("Translate to German", value=False, help="Check this box if you want to translate the lyrics to German.")
+
+        # Translate to German if requested
+        if translate_german:
+            translated_lyric = translate_to_german(generated_lyric)
+            st.success(f"Translated to German:\n{translated_lyric}")
+
         # Ask for user feedback
         user_feedback = st.selectbox("How satisfied are you with the generated lyric?", ["Satisfied", "Neutral", "Dissatisfied"])
 
         # Use user feedback to refine the model if dissatisfied
         if user_feedback == "Dissatisfied":
             st.info("Thank you for your feedback! We will use this to improve our lyric generation.")
-            # You can include logic here
