@@ -27,8 +27,8 @@ def generate_lyrics(artist_name, genre, subject=None, rhyme=None, temperature=0.
     return generated_lyric
 
 # Function to translate text to German
-def translate_to_german(text):
-    translator = GoogleTranslator(source='auto', target='de')
+def translate_to_hindi(text):
+    translator = GoogleTranslator(source='auto', target='hindi')
     translation = translator.translate(text)
     return translation
 
@@ -42,7 +42,7 @@ subject = st.text_input("Subject (Optional):", "Enter the subject for this parti
 rhyme = st.text_input("Rhyme (Optional):", "Enter a particular word or phrase that you would like used")
 temperature = st.slider("Select temperature", 0.1, 1.0, 0.7, 0.1)
 use_slang = st.checkbox("Allow Slang in Lyrics", value=False, key='slang_checkbox', help='Use slang and casual language in the lyrics.')
-translate_german = st.checkbox("Translate to German", value=False, help="Check this box if you want to translate the lyrics to German.")
+translate_hindi = st.checkbox("Translate to Hindi", value=False, help="Check this box if you want to translate the lyrics to German.")
 
 # Generate lyrics when the user clicks the button
 if st.button("Generate Lyrics"):
@@ -55,8 +55,8 @@ if st.button("Generate Lyrics"):
 
         # Translate to German if requested
         if translate_german:
-            translated_lyric = translate_to_german(generated_lyric)
-            st.success(f"Translated to German:\n{translated_lyric}")
+            translated_lyric = translate_to_hindi(generated_lyric)
+            st.success(f"Translated to Hindi:\n{translated_lyric}")
 
         # Ask for user feedback
         user_feedback = st.selectbox("How satisfied are you with the generated lyric?", ["Satisfied", "Neutral", "Dissatisfied"])
