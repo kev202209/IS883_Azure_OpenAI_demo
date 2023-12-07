@@ -54,7 +54,7 @@ if st.button("Generate Lyrics"):
         st.success(f"Generated Lyric:\n{generated_lyric}")
 
         # Translate to German if requested
-        if translate_german:
+        if translate_hindi:
             translated_lyric = translate_to_hindi(generated_lyric)
             st.success(f"Translated to Hindi:\n{translated_lyric}")
 
