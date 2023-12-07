@@ -42,6 +42,7 @@ subject = st.text_input("Subject (Optional):", "Enter the subject for this parti
 rhyme = st.text_input("Rhyme (Optional):", "Enter a particular word or phrase that you would like used")
 temperature = st.slider("Select temperature", 0.1, 1.0, 0.7, 0.1)
 use_slang = st.checkbox("Allow Slang in Lyrics", value=False, key='slang_checkbox', help='Use slang and casual language in the lyrics.')
+translate_german = st.checkbox("Translate to German", value=False, help="Check this box if you want to translate the lyrics to German.")
 
 # Generate lyrics when the user clicks the button
 if st.button("Generate Lyrics"):
@@ -51,9 +52,6 @@ if st.button("Generate Lyrics"):
 
         # Display the generated lyric
         st.success(f"Generated Lyric:\n{generated_lyric}")
-
-        # Ask if the user wants to translate to German
-        translate_german = st.checkbox("Translate to German", value=False, help="Check this box if you want to translate the lyrics to German.")
 
         # Translate to German if requested
         if translate_german:
